@@ -32,25 +32,23 @@ add_subdirectory(vnproglib-1.2.0.0/cpp)
 
 # vectornav library (with composable node)
 add_library(${PROJECT_NAME}_lib SHARED src/vectornav.cc)
-ament_target_dependencies(${PROJECT_NAME}_lib
-  rclcpp rclcpp_components geometry_msgs vectornav_msgs rclcpp_action)
+target_link_libraries(${PROJECT_NAME}_lib rclcpp::rclcpp rclcpp_components::component ${geometry_msgs_TARGETS} ${vectornav_msgs_TARGETS} rclcpp_action::rclcpp_action)
 target_link_libraries(${PROJECT_NAME}_lib vncxx)
 rclcpp_components_register_nodes(${PROJECT_NAME}_lib "vectornav::Vectornav")
 
 # vectornav node
 add_executable(${PROJECT_NAME} src/vectornav_node.cc)
-ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs vectornav_msgs)
+target_link_libraries(${PROJECT_NAME} rclcpp::rclcpp ${geometry_msgs_TARGETS} ${vectornav_msgs_TARGETS})
 target_link_libraries(${PROJECT_NAME} vncxx ${PROJECT_NAME}_lib)
 
 # vn_sensor_msgs library (with composable node)
 add_library(vn_sensor_msgs_lib SHARED src/vn_sensor_msgs.cc)
-ament_target_dependencies(vn_sensor_msgs_lib
-  rclcpp rclcpp_components sensor_msgs vectornav_msgs tf2_geometry_msgs)
+target_link_libraries(vn_sensor_msgs_lib rclcpp::rclcpp rclcpp_components::component ${sensor_msgs_TARGETS} ${vectornav_msgs_TARGETS} tf2_geometry_msgs::tf2_geometry_msgs)
 rclcpp_components_register_nodes(vn_sensor_msgs_lib "vectornav::VnSensorMsgs")
 
 # vn_sensor_msgs node
 add_executable(vn_sensor_msgs src/vn_sensor_msgs_node.cc)
-ament_target_dependencies(vn_sensor_msgs rclcpp geometry_msgs vectornav_msgs)
+target_link_libraries(vn_sensor_msgs rclcpp::rclcpp ${geometry_msgs_TARGETS} ${vectornav_msgs_TARGETS})
 target_link_libraries(vn_sensor_msgs vn_sensor_msgs_lib)
 
 
